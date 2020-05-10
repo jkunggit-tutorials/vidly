@@ -38,20 +38,39 @@ class LoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const errors = this.validate();
-    this.setState({ errors });
+    // we cannot have errors as null
+    this.setState({ errors: errors || {} });
     if (errors) return;
     //const username = this.username.current.value;
     // console.log('submit', username);
   };
 
+  validateProperty = ({ name, value }) => {
+    if (name === 'username') {
+      if (value.trim() === '') return 'username is required';
+      // ...
+    }
+    if (name === 'password') {
+      if (value.trim() === '') return 'password is required';
+      // ...
+    }
+  };
+
   handleChange = ({ currentTarget: input }) => {
+    // validate a specific field
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
+    console.log(errorMessage);
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+
     const account = { ...this.state.account };
     account[input.name] = input.value;
-    this.setState({ account });
+    this.setState({ account, errors });
   };
 
   render() {
-    const { account } = this.state;
+    const { account, errors } = this.state;
     return (
       <div>
         <h1>Login</h1>
@@ -61,12 +80,14 @@ class LoginForm extends Component {
             value={account.name}
             label='user Name'
             onChange={this.handleChange}
+            error={errors.username}
           />
           <Input
             name='password'
             value={account.password}
             label='Password'
             onChange={this.handleChange}
+            error={errors.password}
           />
           <button className='btn btn-primary'>Login</button>
         </form>
