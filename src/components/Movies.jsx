@@ -8,6 +8,7 @@ import Pagination from './common/Pagination';
 import { paginate } from '../utils/paginate';
 import ListGroup from './common/ListGroup';
 import MoviesTable from './MoviesTable';
+import Search from './common/Search';
 
 class Movies extends Component {
   state = {
@@ -16,6 +17,7 @@ class Movies extends Component {
     pageSize: 4,
     currentPage: 1,
     sortColumn: { path: 'title', order: 'asc' },
+    searchQuery: '',
   };
 
   componentDidMount() {
@@ -58,6 +60,11 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
+  handleSearch = ({ currentTarget: input }) => {
+    const query = input.value;
+    this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
+  };
+
   getPageData = () => {
     const {
       pageSize,
@@ -65,12 +72,19 @@ class Movies extends Component {
       movies: allMovies,
       selectedGenre,
       sortColumn,
+      searchQuery,
     } = this.state;
     // we need to filter the allMovies.
-    const filtered =
-      selectedGenre && selectedGenre._id
-        ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
-        : allMovies;
+
+    let filtered = allMovies;
+
+    if (searchQuery) {
+      filtered = allMovies.filter((m) =>
+        m.title.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+      );
+    } else if (selectedGenre && selectedGenre._id) {
+      filtered = allMovies.filter((m) => m.genre._id === selectedGenre._id);
+    }
 
     // sort it
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
@@ -87,6 +101,7 @@ class Movies extends Component {
       genres,
       selectedGenre,
       sortColumn,
+      searchQuery,
     } = this.state;
 
     if (!movieCount) return <p>There are no movies in the database.</p>;
@@ -106,6 +121,7 @@ class Movies extends Component {
             New Movie
           </Link>
           <p>Showing {totalCount} movies in the database.</p>
+          <Search value={searchQuery} onSearch={this.handleSearch} />
           <MoviesTable
             movies={data}
             sortColumn={sortColumn}
