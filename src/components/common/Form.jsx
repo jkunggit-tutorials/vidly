@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Joi from 'joi-browser';
 
 import Input from './Input';
+import Select from './Select';
 
 class Form extends Component {
   // default state if child doesn't have one
@@ -36,6 +37,7 @@ class Form extends Component {
     else delete errors[input.name];
 
     const data = { ...this.state.data };
+    console.log(data);
     data[input.name] = input.value;
     this.setState({ data, errors });
   };
@@ -57,6 +59,21 @@ class Form extends Component {
       <button disabled={this.validate()} className='btn btn-primary'>
         {label}
       </button>
+    );
+  }
+
+  renderSelect(name, label, options) {
+    const { data, errors } = this.state;
+    return (
+      <Select
+        className='form-control'
+        name={name}
+        onChange={this.handleChange}
+        label={label}
+        value={data[name]}
+        options={options}
+        error={errors[name]}
+      />
     );
   }
 

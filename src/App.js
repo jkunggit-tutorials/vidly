@@ -11,6 +11,7 @@ import NotFound from './components/NotFound';
 import MovieForm from './components/MovieForm';
 import LoginForm from './components/common/loginForm';
 import RegisterForm from './components/common/RegisterForm';
+import MoviewForm from './components/MovieForm';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <NavBar />
       <main className='container'>
         <Switch>
+          <Route path='/new' component={MovieForm} />
           <Route path='/login' component={LoginForm} />
           <Route path='/register' component={RegisterForm} />
           <Route path='/movies/:id' component={MovieForm} />
