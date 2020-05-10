@@ -4,6 +4,7 @@ import Joi from 'joi-browser';
 import Input from './Input';
 
 class Form extends Component {
+  // default state if child doesn't have one
   state = {
     data: {},
     errors: {},
