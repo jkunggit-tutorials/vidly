@@ -4,7 +4,7 @@ import { apiUrl } from '../config.json';
 const apiEndpoint = apiUrl + '/movies';
 
 function movieUrl(movieId) {
-  return `{apiEndpoint}/${movieId}`;
+  return `${apiEndpoint}/${movieId}`;
 }
 
 export function getMovies() {
