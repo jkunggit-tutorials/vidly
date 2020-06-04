@@ -38,7 +38,11 @@ class App extends Component {
             <Route path='/movies/:id' component={MovieForm} />
             <Route path='/rentals' component={Rentals} />
             <Route path='/customers' component={Customers} />
-            <Route path='/movies' exact component={Movies} />
+            <Route
+              path='/movies'
+              exact
+              render={(props) => <Movies {...props} user={this.state.user} />}
+            />
             <Route path='/not-found' component={NotFound} />
             <Redirect from='/' exact to='/movies' />
             <Redirect to='/not-found' />
