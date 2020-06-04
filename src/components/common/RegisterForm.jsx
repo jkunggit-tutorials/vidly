@@ -2,6 +2,7 @@ import React from 'react';
 import Joi from 'joi-browser';
 // import * as userService from '../../services/userService';
 import { register } from '../../services/userService';
+import auth from '../../services/authService';
 
 import Form from './Form';
 
@@ -29,7 +30,8 @@ class RegisterForm extends Form {
     try {
       const response = await register(this.state.data);
       console.log(response);
-      localStorage.setItem('token', response.headers['x-auth-token']);
+      //localStorage.setItem('token', response.headers['x-auth-token']);
+      auth.loginWithJwt(response.headers['x-auth-token']);
       //this.props.history.push('/'); // redirec to home page
       window.location = '/';
     } catch (ex) {

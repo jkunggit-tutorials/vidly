@@ -3,7 +3,7 @@ import Joi from 'joi-browser';
 
 import Form from './Form';
 // import * as authService from '../../services/authService';
-import { login } from '../../services/authService';
+import auth from '../../services/authService';
 
 class LoginForm extends Form {
   constructor() {
@@ -33,8 +33,7 @@ class LoginForm extends Form {
   doSubmit = async () => {
     const { data } = this.state;
     try {
-      const { data: jwt } = await login(data.username, data.password);
-      localStorage.setItem('token', jwt);
+      await auth.login(data.username, data.password);
       // this.props.history.push('/'); // redirect to home page
       window.location = '/';
     } catch (ex) {
