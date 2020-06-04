@@ -2,6 +2,8 @@ import React from 'react';
 import Joi from 'joi-browser';
 
 import Form from './Form';
+// import * as authService from '../../services/authService';
+import { login } from '../../services/authService';
 
 class LoginForm extends Form {
   constructor() {
@@ -28,8 +30,17 @@ class LoginForm extends Form {
     // this.username.current.focus();
   }
 
-  doSubmit = () => {
-    console.log('submitted');
+  doSubmit = async () => {
+    const { data } = this.state;
+    try {
+      await login(data.username, data.password);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.username = ex.response.data;
+        this.setState({ errors });
+      }
+    }
   };
 
   render() {
