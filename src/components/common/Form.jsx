@@ -13,7 +13,6 @@ class Form extends Component {
 
   validate = () => {
     const options = { abortEarly: false };
-    console.log('this.state.data', this.state.data);
     const { error } = Joi.validate(this.state.data, this.schema, options);
 
     if (!error) return null;
@@ -21,7 +20,7 @@ class Form extends Component {
     const errors = {};
     for (let item of error.details) errors[item.path[0]] = item.message;
 
-    console.log('errors', errors);
+    // console.log('errors', errors);
     return errors;
   };
 
@@ -40,7 +39,6 @@ class Form extends Component {
     else delete errors[input.name];
 
     const data = { ...this.state.data };
-    console.log(data);
     data[input.name] = input.value;
     this.setState({ data, errors });
   };

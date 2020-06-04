@@ -27,7 +27,11 @@ class RegisterForm extends Form {
   doSubmit = async () => {
     console.log('submitted');
     try {
-      await register(this.state.data);
+      const response = await register(this.state.data);
+      console.log(response);
+      localStorage.setItem('token', response.headers['x-auth-token']);
+      //this.props.history.push('/'); // redirec to home page
+      window.location = '/';
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
